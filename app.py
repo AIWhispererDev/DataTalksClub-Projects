@@ -13,8 +13,8 @@ st.set_page_config(
 def load_data(selected_courses, selected_years):
     return load_all_data(selected_courses, selected_years)
 
-def filter_dataframe(df):
-    return filter_dataframe(df)
+# def filter_dataframe(df):
+#     return filter_dataframe(df)
 
 if __name__ == "__main__":
     st.title(
@@ -39,43 +39,7 @@ if __name__ == "__main__":
             data['project_title'] = data['project_title'].astype(str)
             data['processed_titles'] = data['project_title'].apply(analysis.preprocess_text)
             data = filter_dataframe(data)
-            st.write(f"Number of projects loaded: {data.shape[0]}")
-
-            st.dataframe(
-                data,
-                column_config={
-                    "project_url": st.column_config.LinkColumn("Project URL"),
-                },
-                hide_index=True,
-            )
-
-            if not data.empty:
-                csv = data.to_csv(index=False).encode('utf-8')
-                if st.download_button(
-                    label="Download CSV",
-                    data=csv,
-                    file_name='data.csv',
-                    mime='text/csv',
-                    key='download-csv',
-                ):
-                    st.write('Download Completed!')
-
-            ########
-            # PLOT
-            #####################################################
-            # Settings
-            word_freq = analysis.calculate_word_frequency(data['processed_titles'])
-            top_titles = data['project_title'].value_counts()[:10]
-            top_words = word_freq[:10]
-            course_counts = data['Course'].value_counts()
-            deployment_types = data['Deployment Type'].value_counts()
-            cloud_provider_counts = data['Cloud'].value_counts()
-
-            palette = sns.color_palette("cubehelix", len(course_counts.index))
-            course_order = course_counts.index.tolist()
-            # Convert Seaborn palette to a list of colors
-            palette_colors = sns.color_palette(palette, len(course_order)).as_hex()
-            generate_plot(data)
+            generate_plot(data, analysis)
         else:
             st.write("No data loaded.")
     else:
