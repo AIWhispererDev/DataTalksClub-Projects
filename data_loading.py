@@ -17,6 +17,3 @@ def load_all_data(selected_courses, selected_years):
             else:
                 print(f"File not found: {path}")
     return pd.concat(dfs, ignore_index=True) if dfs else None
-
-def filter_dataframe(df: pd.DataFrame) -> pd.DataFrame:
-    ...rest of the code...
