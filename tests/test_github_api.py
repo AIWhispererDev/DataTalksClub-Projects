@@ -1,19 +1,19 @@
-import os
-
-from dotenv import load_dotenv
-
-# Load environment variables from .env file
-load_dotenv()
-
+import pytest
+from utils.github_api import GitHubAPI
 
 class TestGitHubAPI:
-    def setup_method(self):
-        # Get the GitHub token from environment variables
-        github_token = os.environ.get("GITHUB_ACCESS_TOKEN")
+    @pytest.fixture
+    def api(self):
+        return GitHubAPI('your_token_here')
 
-        github_api = GitHubAPI(github_token)
-        self.github_api = GitHubAPI()
+    def test_get_readme_content(self, api):
+        # Add your test cases here
+        assert api.get_readme_content('url') == 'expected_result'
 
-    def test_get_readme_content(self):
-        content = self.github_api.get_readme_content('some_github_url')
-        assert content is not None
+    def test_get_readme_filename(self, api):
+        # Add your test cases here
+        assert api.get_readme_filename('owner', 'repo', 'path') == 'expected_result'
+
+    def test_construct_readme_api_url(self, api):
+        # Add your test cases here
+        assert api.construct_readme_api_url('url') == ('expected_result_1', 'expected_result_2')
